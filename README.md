@@ -15,6 +15,8 @@
 ![Shunyaya](https://img.shields.io/badge/Part%20of-Shunyaya%20Ecosystem-gold)
 ![Formalization](https://img.shields.io/badge/Formalization-Planned-red)
 
+[![STRUPER Verify](https://github.com/OMPSHUNYAYA/STRUPER/actions/workflows/struper-verify.yml/badge.svg)](https://github.com/OMPSHUNYAYA/STRUPER/actions/workflows/struper-verify.yml)
+
 ---
 
 **Where mature structure resolves and realization becomes visible — deterministically, reproducibly, and beyond procedural realization dependence.**
