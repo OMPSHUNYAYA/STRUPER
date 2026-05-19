@@ -1,0 +1,323 @@
+Open Standard License — STRUPER Reference Implementation
+
+STRUPER — Structural Resolution Beyond Procedural Realization
+
+Shunyaya Structural Realization Model
+
+Legal Status
+
+This license is a permissive Open Standard license for the STRUPER reference implementation.
+
+To the maximum extent permitted by applicable law, this license grants rights similar in spirit to permissive open-source licenses, while preserving truthful representation requirements for the STRUPER name and reference implementation.
+
+If any provision is found unenforceable, the remaining provisions remain in effect.
+
+Nature of Release
+
+This is a minimal, self-contained reference implementation.
+
+It is intended to demonstrate a structural realization model — not to represent a full orchestration platform, realization runtime, workflow system, or procedural realization framework.
+
+Behavioral guarantees apply only within the scope of the reference model and its defined structural assumptions.
+
+Permission
+
+Permission is hereby granted, free of charge, to any person or organization to:
+
+use
+execute
+study
+reproduce
+publish
+distribute
+modify
+implement
+extend
+
+the STRUPER reference implementation, in whole or in part, for commercial or non-commercial use, subject only to the representation and naming conditions defined in this license.
+
+No registration, fees, or approval required.
+
+No Restrictions on Use
+
+This reference implementation imposes no restrictions on usage, except:
+
+truthful representation
+non-misleading use of the STRUPER name
+
+Attribution is not required, but is encouraged for clarity and ecosystem integrity.
+
+No endorsement or certification is implied.
+
+No runtime obligations apply.
+
+Separation of License and Structural Truth
+
+This license governs legal usage, distribution, and representation.
+
+It does not govern, alter, or override structural correctness.
+
+Structural correctness is defined independently by:
+
+realization = resolve(structure)
+
+Legal permission does not imply structural validity.
+Structural validity does not depend on legal permission.
+
+Practical Interpretation
+
+This license governs usage and representation.
+
+It does not govern correctness.
+
+Correctness within this model is determined solely by structure:
+
+structure_complete = TRUE AND structure_consistent = TRUE
+
+Licensing governs usage — not correctness.
+
+Bounded realization correctness is a property of structure — independent of procedural realization flow, orchestration choreography, or realization reconstruction.
+
+Structural truth is represented by deterministic realization outcome.
+Proof is represented by certificate.
+
+Deterministic structural reproducibility is expressed as:
+
+same structure -> same realization -> same output certificate
+
+Different structure -> different admissibility outcome
+
+Clarification — Procedural Systems as Capability
+
+This statement refers specifically to correctness as a property of structure.
+
+The reference implementation may use procedural systems for:
+
+rendering
+orchestration
+runtime capability
+interface behavior
+realization capability
+
+However, such procedural systems are not the source of correctness.
+
+Correctness is determined solely by structural admissibility.
+
+Key distinction:
+
+Traditional systems: correctness = result of procedural realization flow
+
+STRUPER: correctness = result of resolved structure
+
+Procedural realization may reveal realization.
+It does not define admissibility.
+
+Representation & Naming
+
+Modified or extended implementations:
+
+must not be presented as the canonical STRUPER reference implementation unless structural behavior is preserved
+must not imply official authorship, certification, or endorsement
+
+Use of the name “STRUPER” must not imply:
+
+endorsement
+certification
+governance authority
+official status
+Recommended Attribution (Optional)
+
+Preferred form:
+
+Implements STRUPER — Structural Resolution Beyond Procedural Realization (Shunyaya Structural Model)
+
+Attribution must not imply endorsement.
+
+Scope of the Reference Implementation
+
+This release includes:
+
+structural realization definitions
+deterministic admissibility rules
+structural carry-forward demonstrations
+replay-safe realization outputs
+reference traces and certificates
+
+STRUPER defines a deterministic structural realization model where realization emerges from structure:
+
+resolve(structure) ->
+
+RESOLVED if structure is complete AND consistent
+INCOMPLETE if structure is incomplete
+CONFLICT if structure is inconsistent
+
+What This Demonstrates
+
+deterministic structural realization evolution
+structural carry-forward
+replay-safe realization continuity
+realization evolution through structural extension
+independence from procedural realization flow as correctness source
+deterministic and reproducible realization states
+identical structure produces identical realization and certificate
+Conformance
+
+An implementation is considered compatible if it preserves:
+
+structure-based correctness
+deterministic realization resolution
+structural carry-forward
+deterministic replay behavior
+structure-driven realization visibility
+reproducibility of realization and certificate under equivalent inputs
+explicit handling of incomplete and conflicting structure
+
+Conformance is judged solely by observable behavior — not by internal implementation.
+
+S1 = S2 -> Realization1 = Realization2 -> Certificate1 = Certificate2
+
+Conflict Handling
+
+In this reference implementation:
+
+CONFLICT is explicitly defined and demonstrated
+INCOMPLETE corresponds to structurally insufficient realization declarations
+inconsistent conditions do not produce visible realization
+
+Conformance requires:
+
+no forced realization under incomplete structure
+no arbitrary realization under conflicting structure
+
+Normalization Requirement
+
+For deterministic certificate identity:
+
+normalized_realization = normalize(Realization)
+
+certificate = hash(normalized_realization)
+
+Normalization ensures:
+
+independence from procedural realization flow
+independence from representation format
+consistent certificate identity across runs and systems
+
+In the reference implementation:
+
+SHA-256 is used for demonstration.
+
+Deterministic Replay Guarantee
+
+Correctness remains invariant under replay:
+
+same structure -> same realization -> same output certificate
+
+This ensures:
+
+replay != divergence
+
+Realization depends only on structure — not procedural realization sequencing.
+
+Structural Evolution Principle
+
+STRUPER demonstrates:
+
+small structural extension -> deterministic upgraded realization
+
+without reconstructing mature realization structure.
+
+This enables:
+
+structural carry-forward
+replay-safe structural evolution
+deterministic realization continuity
+reusable realization foundations
+
+Relationship to Shunyaya Framework
+
+STRUPER is part of the broader Shunyaya framework.
+
+It builds on:
+
+SLANG -> correctness without execution
+ORL -> correctness without ordering
+STIME -> correctness without synchronized time
+STINT -> correctness without connectivity
+STILE -> correctness without communication
+SVARE -> correctness without computation
+STOCRS -> correctness without sequence or synchronization
+STOCRS-R -> realization-path independence
+STRUMER -> structural media realization
+STRUPER -> structural realization beyond procedural realization dependence
+
+Each removes an assumed dependency for correctness.
+Correctness remains preserved by structure.
+
+Architecture License
+
+The conceptual architecture and documentation are licensed under:
+
+Creative Commons Attribution-NonCommercial 4.0 (CC BY-NC 4.0)
+
+Permitted:
+
+research
+academic use
+study and reproduction
+non-commercial distribution
+
+Commercial use of architecture text is not permitted under this license.
+
+Full license:
+
+https://creativecommons.org/licenses/by-nc/4.0/
+
+Responsibility
+
+Use of STRUPER in real-world systems is entirely at the user’s own responsibility.
+
+This reference implementation demonstrates:
+
+deterministic structural realization with reproducible outputs and certificates
+correctness derived from structure
+replay-safe structural evolution demonstrations
+safe handling of incomplete and conflicting structure
+
+It does not provide:
+
+runtime guarantees
+orchestration guarantees
+performance guarantees
+real-time guarantees
+safety-critical assurances
+regulatory or compliance guarantees
+
+No Warranty
+
+THE STRUPER REFERENCE IMPLEMENTATION IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND.
+
+THIS INCLUDES, BUT IS NOT LIMITED TO:
+
+MERCHANTABILITY
+FITNESS FOR A PARTICULAR PURPOSE
+NON-INFRINGEMENT
+
+IN NO EVENT SHALL THE AUTHORS OR CONTRIBUTORS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY ARISING FROM USE OF THIS IMPLEMENTATION.
+
+Closing Statement
+
+STRUPER explores a simple but fundamental idea:
+
+Bounded realization correctness may emerge deterministically from structure — without requiring procedural realization flow as the source of correctness.
+
+Procedural systems may reveal realization.
+Structure determines admissibility.
+
+It is released to encourage:
+
+independent validation
+real-world testing
+safe experimentation
+
+STRUPER is offered as a minimal, verifiable reference implementation of that possibility.
