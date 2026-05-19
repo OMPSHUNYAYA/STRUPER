@@ -1,0 +1,389 @@
+STRUPER Verification — Structural Realization
+
+1. Open the reference demonstration
+
+Option A (recommended)
+
+python struper_demo_v1_0.py
+
+Option B (from repository root)
+
+python demo/struper_demo_v1_0.py
+
+
+2. Observe
+
+deterministic structural realization correctness
+no procedural realization flow dependency for correctness
+no orchestration choreography dependency for correctness
+no replay sequencing dependency for correctness
+no realization reconstruction dependency for correctness
+no external libraries
+correctness is not produced by procedural realization flow — it is determined by structure
+procedural systems do not determine correctness (only structural admissibility does)
+
+
+3. Expected baseline states
+
+complete structure
+
+  realization_state: RESOLVED
+  realization_visible: True
+  certificate: <stable hash>
+
+incomplete structure
+
+  realization_state: INCOMPLETE
+  realization_visible: False
+  reason: missing required structure
+
+conflicting structure
+
+  realization_state: CONFLICT
+  realization_visible: False
+  reason: conflicting admissibility conditions
+
+procedural realization variation
+
+  replay_path: changed
+  orchestration_order: changed
+  realization_state: RESOLVED, if structure is complete AND consistent
+  (procedural realization variation does not affect correctness)
+
+
+4. Structural realization rule
+
+structure_complete = TRUE AND structure_consistent = TRUE
+
+realization_visible iff structure_complete AND structure_consistent
+
+resolve(S, P1) = resolve(S, P2)
+for all admissible procedural realization paths P1, P2
+
+realization = resolve(structure)
+
+
+5. Expected behavior
+
+complete structure      -> RESOLVED -> realization visible
+incomplete structure    -> INCOMPLETE -> no realization
+conflicting structure   -> CONFLICT -> no realization
+
+identical input structure
+-> identical realization + identical admissibility state
+
+identical input structure
+-> identical certificate
+
+procedural realization variation does not change correctness
+
+
+6. Verify determinism
+
+Run the same demo twice:
+
+python demo/struper_demo_v1_0.py
+python demo/struper_demo_v1_0.py
+
+Expected:
+
+same realization
+same admissibility states
+same certificates
+
+Confirm:
+
+same structure -> same realization -> same certificate
+
+
+6.1 Verify full invariant
+
+For identical structures:
+
+realization identical
+certificate identical
+
+
+7. Verify representative cases
+
+Case 1 — Replay variation + complete structure
+
+Expected:
+
+  realization_state: RESOLVED
+  realization_visible: True
+  certificate: <stable>
+
+
+Case 2 — Incomplete structure
+
+Expected:
+
+  realization_state: INCOMPLETE
+  realization_visible: False
+  missing admissible structure is reported
+
+
+Case 3 — Conflicting structure
+
+Expected:
+
+  realization_state: CONFLICT
+  realization_visible: False
+  conflict reason is reported
+
+
+Case 4 — Replay determinism
+
+Expected:
+
+  first certificate == second certificate
+  replay match: True
+
+
+Case 5 — Same structure under reordered orchestration
+
+Expected:
+
+  realization_state: RESOLVED
+  realization_visible: True
+  certificate matches original admissible structure case
+
+
+Case 6 — Procedural realization invariance check
+
+Expected:
+
+  reordered replay certificate == original replay certificate
+  Same realization: True
+  Same certificate: True
+
+
+7.1 Structural Truth vs Procedural Realization Dependency
+
+Compare procedural systems with STRUPER:
+
+Example:
+
+same structure with procedural realization path A
+same structure with procedural realization path B
+
+Expected:
+
+STRUPER:
+
+realization remains unchanged
+certificate remains unchanged
+
+Traditional procedural interpretation:
+
+behavior may depend on orchestration choreography
+replay divergence may occur
+
+Observation:
+
+traditional procedural interpretations may conflate realization flow with correctness
+
+STRUPER separates correctness from procedural realization flow
+
+Conclusion:
+
+correctness != procedural realization flow
+
+correctness = resolve(structure)
+
+
+8. Verify distinct proof identities
+
+Different structures:
+
+complete structure
+incomplete structure
+conflicting structure
+
+Expected:
+
+different certificates may appear
+because structure has changed
+
+Confirm:
+
+different input structure -> certificate may differ
+
+
+9. Verify incomplete safety
+
+Remove required admissible realization structure.
+
+Expected:
+
+realization_state: INCOMPLETE
+realization_visible: False
+reason: missing required admissible realization structure
+
+
+10. Verify conflict safety
+
+Introduce contradictory admissibility conditions.
+
+Expected:
+
+realization_state: CONFLICT
+realization_visible: False
+reason: conflict detected
+
+
+11. Verify procedural realization independence
+
+Change procedural realization:
+
+orchestration order changed
+replay path changed
+realization sequencing changed
+
+Expected:
+
+if structure is complete AND consistent:
+
+realization_state: RESOLVED
+certificate: unchanged
+
+(resolve(S, P1) = resolve(S, P2))
+
+
+12. Verify correctness consistency
+under procedural realization changes
+
+Same structure:
+
+procedural realization path A
+procedural realization path B
+
+Expected:
+
+same realization
+same certificate
+
+Note:
+
+procedural realization flow
+is not part of structural correctness identity.
+
+
+13. Verify structural transitions
+
+Change structure:
+
+complete structure       -> RESOLVED
+missing structure        -> INCOMPLETE
+conflicting structure    -> CONFLICT
+
+Expected:
+
+state changes strictly follow structure
+
+
+14. Verify certificate components
+
+Expected:
+
+certificate is derived solely from
+structural realization components, such as:
+
+capsule_sigma
+dependency_sigma
+carry_forward_sigma
+realization_state
+
+Procedural realization flow
+does not change the certificate
+when structure remains identical.
+
+
+15. Normalization requirement
+
+normalized_realization = normalize(Realization)
+
+certificate = hash(normalized_realization)
+
+Expected:
+
+certificate depends only on
+normalized admissible realization outcome
+
+representation format does not affect certificate
+
+procedural realization ordering
+does not affect certificate
+
+In the reference implementation:
+
+SHA-256 (truncated) is used for demonstration.
+
+
+16. Verify file identity
+
+certutil -hashfile struper_demo_v1_0.py SHA256
+
+or from repository root:
+
+certutil -hashfile demo\struper_demo_v1_0.py SHA256
+
+Note:
+
+file hash = file identity
+
+certificate = structural realization artifact
+
+
+17. Structural realization model
+
+resolve(structure) ->
+
+RESOLVED      if structure is complete AND consistent
+INCOMPLETE    if structure is incomplete
+CONFLICT      if structure is inconsistent
+
+
+18. Core invariant
+
+realization = resolve(structure)
+
+realization_visible iff
+structure_complete AND structure_consistent
+
+same structure -> same realization -> same certificate
+
+Correctness claims apply only within
+the defined structural realization model.
+
+
+19. Confirm
+
+identical input structure -> identical realization
+
+identical input structure -> identical certificate
+
+no procedural realization flow dependency for correctness
+
+no orchestration choreography dependency for correctness
+
+no replay sequencing dependency for correctness
+
+no realization reconstruction dependency for correctness
+
+procedural disorder does not imply correctness failure
+
+invalid structure does not produce realization
+
+
+Result
+
+Deterministic structural realization correctness confirmed for STRUPER.
+
+Bounded realization correctness is determined by structure —
+not from procedural realization flow,
+orchestration choreography,
+replay sequencing,
+realization reconstruction pipelines,
+or runtime realization ordering.

@@ -1,0 +1,7 @@
+STRUPER — Hash Freeze (SHA256)
+
+demo\struper_demo_v1_0.py
+SHA256: 6719367fa2b208de5b8dd1f76b21875165d691fac3cb0edd4212e51fba79a35c
+
+same file -> same hash
+different file -> different hash
