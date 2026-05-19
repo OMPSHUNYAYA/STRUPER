@@ -280,10 +280,6 @@ STRUPER/
 │   ├── Dependency-Elimination-Framework.png  
 │   └── Shunyaya-Structural-Stack.png  
 
-├── outputs/  
-│   ├── STRUPER_Demo_v1_0.json  
-│   └── STRUPER_Demo_v1_0_VERIFY.txt  
-
 └── VERIFY/  
     ├── VERIFY.txt  
     └── FREEZE_DEMO_SHA256.txt  
