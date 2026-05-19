@@ -1,0 +1,255 @@
+name: struper-verify
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Verify required repository files exist
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import sys
+
+          required_paths = [
+              "README.md",
+              "LICENSE",
+
+              "demo/struper_demo_v1_0.py",
+
+              "docs/Quickstart.md",
+              "docs/FAQ.md",
+              "docs/Proof-Sketch.md",
+              "docs/STRUPER-Architecture-Notes.md",
+              "docs/STRUPER-Challenge.md",
+              "docs/STRUPER-Diagram.png",
+              "docs/STRUPER_v1.1.pdf",
+              "docs/Dependency-Elimination-Framework.png",
+              "docs/Shunyaya-Structural-Stack.png",
+
+              "VERIFY/VERIFY.txt",
+              "VERIFY/FREEZE_DEMO_SHA256.txt",
+          ]
+
+          missing = [p for p in required_paths if not Path(p).exists()]
+
+          if missing:
+              print("ERROR: Missing required repository files:")
+              for p in missing:
+                  print(" -", p)
+              sys.exit(1)
+
+          print("Required repository files verified.")
+          PY
+
+      - name: Verify frozen SHA256 hash
+        shell: bash
+        run: |
+          python - <<'PY'
+          import hashlib
+          import re
+          import sys
+          from pathlib import Path
+
+          freeze_path = Path("VERIFY/FREEZE_DEMO_SHA256.txt")
+          target = Path("demo/struper_demo_v1_0.py")
+          label = "demo/struper_demo_v1_0.py"
+
+          freeze_text = freeze_path.read_text(
+              encoding="utf-8",
+              errors="replace"
+          )
+
+          label_variants = [
+              re.escape(label),
+              re.escape(label.replace("/", "\\")),
+          ]
+
+          pattern = (
+              rf"({'|'.join(label_variants)})\s*SHA256:\s*([0-9a-f]{{64}})"
+          )
+
+          match = re.search(
+              pattern,
+              freeze_text,
+              re.IGNORECASE
+          )
+
+          if not match:
+              print(f"ERROR: No frozen SHA256 entry found for {label}")
+              sys.exit(1)
+
+          expected = match.group(2).lower()
+          actual = hashlib.sha256(target.read_bytes()).hexdigest().lower()
+
+          if actual != expected:
+              print(f"ERROR: Hash mismatch for {label}")
+              print("Expected:", expected)
+              print("Actual:  ", actual)
+              sys.exit(1)
+
+          print(f"Hash verified for {label}: {actual}")
+          PY
+
+      - name: Run STRUPER demo
+        shell: bash
+        run: |
+          python demo/struper_demo_v1_0.py
+
+      - name: Verify STRUPER output markers
+        shell: bash
+        run: |
+          python - <<'PY'
+          import subprocess
+          import sys
+
+          cmd = [sys.executable, "demo/struper_demo_v1_0.py"]
+
+          result = subprocess.run(
+              cmd,
+              capture_output=True,
+              text=True,
+              check=True
+          )
+
+          out = result.stdout
+
+          required_markers = [
+              "STRUPER Demo v1.0",
+              "Structural Resolution Beyond Procedural Realization",
+              "Principle: realization = resolve(structure)",
+              "Law: same mature structure -> same bounded realization -> same output certificate",
+              "This is not ordinary speed optimization research.",
+              "Traditional procedural result",
+              "STRUPER structural result",
+              "Final total: 67500000.0",
+              "Same final total: True",
+              "Same output certificate: True",
+              "Different method certificates: True",
+              "It demonstrates bounded realization beyond procedural realization dependence.",
+          ]
+
+          missing = [
+              marker
+              for marker in required_markers
+              if marker not in out
+          ]
+
+          if missing:
+              print("ERROR: STRUPER output missing expected markers:")
+
+              for marker in missing:
+                  print(" -", marker)
+
+              print("\nFull output:\n")
+              print(out)
+
+              sys.exit(1)
+
+          print("STRUPER output markers verified.")
+          PY
+
+      - name: Verify deterministic replay certificates
+        shell: bash
+        run: |
+          python - <<'PY'
+          import re
+          import subprocess
+          import sys
+
+          cmd = [sys.executable, "demo/struper_demo_v1_0.py"]
+
+          result1 = subprocess.run(
+              cmd,
+              capture_output=True,
+              text=True,
+              check=True
+          )
+
+          result2 = subprocess.run(
+              cmd,
+              capture_output=True,
+              text=True,
+              check=True
+          )
+
+          pattern = r"Output certificate:\s*([0-9a-f]{64})"
+
+          certs1 = re.findall(pattern, result1.stdout)
+          certs2 = re.findall(pattern, result2.stdout)
+
+          if len(certs1) != 2 or len(certs2) != 2:
+              print("ERROR: Expected two output certificates in each run.")
+              sys.exit(1)
+
+          if certs1[0] != certs1[1]:
+              print("ERROR: First run output certificates do not match.")
+              sys.exit(1)
+
+          if certs2[0] != certs2[1]:
+              print("ERROR: Second run output certificates do not match.")
+              sys.exit(1)
+
+          if certs1[0] != certs2[0]:
+              print("ERROR: Replay output certificates differ.")
+              print("Run 1:", certs1[0])
+              print("Run 2:", certs2[0])
+              sys.exit(1)
+
+          print("Deterministic replay certificates verified.")
+          PY
+
+      - name: Verify README contains core STRUPER claims
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import sys
+
+          text = Path("README.md").read_text(
+              encoding="utf-8",
+              errors="replace"
+          )
+
+          required_snippets = [
+              "Structural Resolution Beyond Procedural Realization",
+              "realization = resolve(structure)",
+              "realization_visible iff structure_complete AND structure_consistent",
+              "same structure -> same realization -> same output certificate",
+              "procedural_variation != correctness_variation",
+              "enhancement != procedural reconstruction",
+              "STRUPER",
+              "demo/struper_demo_v1_0.py",
+              "VERIFY/FREEZE_DEMO_SHA256.txt",
+          ]
+
+          missing = [
+              snippet
+              for snippet in required_snippets
+              if snippet not in text
+          ]
+
+          if missing:
+              print("ERROR: README.md is missing expected STRUPER claims:")
+
+              for snippet in missing:
+                  print(" -", snippet)
+
+              sys.exit(1)
+
+          print("README core claims verified.")
+          PY
